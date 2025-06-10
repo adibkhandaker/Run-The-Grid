@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="510.0" prefWidth="709.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.DraftByYearController">
+   <children>
+      <ChoiceBox fx:id="yearChoice" layoutX="21.0" layoutY="35.0" onAction="#getYearData" prefWidth="150.0" />
+      <TableView fx:id="draftTable" layoutX="21.0" layoutY="84.0" prefHeight="394.0" prefWidth="664.0">
+        <columns>
+          <TableColumn fx:id="round" prefWidth="75.0" text="Round" />
+          <TableColumn fx:id="pick" prefWidth="75.0" text="Pick" />
+            <TableColumn fx:id="team" prefWidth="75.0" text="Team" />
+            <TableColumn fx:id="name" prefWidth="107.0" text="Name" />
+            <TableColumn fx:id="position" prefWidth="75.0" text="Position" />
+            <TableColumn fx:id="age" prefWidth="75.0" text="Age" />
+            <TableColumn fx:id="college" prefWidth="111.0" text="College" />
+        </columns>
+      </TableView>
+      <ChoiceBox fx:id="roundChoice" layoutX="205.0" layoutY="35.0" onAction="#getRoundData" prefWidth="150.0" />
+      <Label fx:id="yearLabel" layoutX="21.0" layoutY="14.0" text="Year" />
+      <Label fx:id="roundLabel" layoutX="205.0" layoutY="14.0" text="Round" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="442.0" prefWidth="675.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.DepthChartController">
+   <children>
+      <TableView fx:id="depthTable" layoutX="16.0" layoutY="90.0" prefHeight="331.0" prefWidth="644.0">
+        <columns>
+          <TableColumn fx:id="name" prefWidth="131.0" text="Name" />
+          <TableColumn fx:id="age" prefWidth="75.0" text="Age" />
+            <TableColumn fx:id="weight" prefWidth="75.0" text="Weight" />
+            <TableColumn fx:id="position" prefWidth="75.0" text="Position" />
+            <TableColumn fx:id="rank" prefWidth="75.0" text="Rank" />
+            <TableColumn fx:id="birth" prefWidth="122.0" text="DOB" />
+            <TableColumn fx:id="debutYear" prefWidth="75.0" text="Debut" />
+        </columns>
+      </TableView>
+      <Label layoutX="154.0" layoutY="21.0" prefHeight="53.0" prefWidth="367.0" text="2025 DEPTH CHART">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="teamLogo" fitHeight="72.0" fitWidth="79.0" layoutX="31.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>
