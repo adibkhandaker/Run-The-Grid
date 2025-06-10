@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="495.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.MainMenuController">
+   <children>
+      <Button layoutX="41.0" layoutY="108.0" mnemonicParsing="false" onAction="#draftByYear" prefHeight="71.0" prefWidth="196.0" text="Draft By Year" />
+      <Button layoutX="265.0" layoutY="108.0" mnemonicParsing="false" onAction="#teamSelection" prefHeight="71.0" prefWidth="196.0" text="Team Information" />
+   </children>
+</AnchorPane>
