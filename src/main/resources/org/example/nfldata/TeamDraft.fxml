@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,20 +12,29 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.DraftByYearController">
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.TeamDraftController">
    <children>
       <!-- Header Section -->
       <VBox layoutX="0.0" layoutY="0.0" prefWidth="1000.0" prefHeight="120.0" styleClass="header-section">
          <children>
-            <Label text="NFL Draft By Year" styleClass="main-title">
-               <font>
-                  <Font name="System Bold" size="32.0" />
-               </font>
-               <VBox.margin>
+            <HBox alignment="CENTER" spacing="20.0">
+               <children>
+                  <ImageView fx:id="teamLogo" fitHeight="80.0" fitWidth="80.0" preserveRatio="true" />
+                  <Label fx:id="teamNameLabel" text="Team Draft History" styleClass="main-title">
+                     <font>
+                        <Font name="System Bold" size="32.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="draftLabel" text="2025 DRAFT CLASS" styleClass="draft-class-label">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+               <HBox.margin>
                   <Insets top="20.0" bottom="10.0" />
-               </VBox.margin>
-            </Label>
-            
+               </HBox.margin>
+            </HBox>
             <!-- Controls Section -->
             <HBox alignment="CENTER" spacing="20.0">
                <children>
@@ -34,14 +44,6 @@
                         <ChoiceBox fx:id="yearChoice" prefWidth="120.0" />
                      </children>
                   </VBox>
-                  
-                  <VBox alignment="CENTER_RIGHT" spacing="5.0">
-                     <children>
-                        <Label text="Round:" styleClass="control-label" />
-                        <ChoiceBox fx:id="roundChoice" prefWidth="120.0" />
-                     </children>
-                  </VBox>
-                  
                   <VBox alignment="CENTER_LEFT" spacing="5.0">
                      <children>
                         <Label text="Status:" styleClass="control-label" />
@@ -55,20 +57,16 @@
             </HBox>
          </children>
       </VBox>
-      
       <!-- Table Section -->
       <TableView fx:id="draftTable" layoutX="20.0" layoutY="140.0" prefHeight="420.0" prefWidth="960.0" styleClass="data-table">
         <columns>
-          <TableColumn fx:id="round" prefWidth="70.0" text="Round" styleClass="table-header" />
-          <TableColumn fx:id="pick" prefWidth="70.0" text="Pick" styleClass="table-header" />
-          <TableColumn fx:id="team" prefWidth="90.0" text="Team" styleClass="table-header" />
-          <TableColumn fx:id="name" prefWidth="200.0" text="Player Name" styleClass="table-header" />
-          <TableColumn fx:id="position" prefWidth="90.0" text="Position" styleClass="table-header" />
-          <TableColumn fx:id="height" prefWidth="90.0" text="Height" styleClass="table-header" />
-          <TableColumn fx:id="college" prefWidth="250.0" text="College" styleClass="table-header" />
+          <TableColumn fx:id="roundColumn" prefWidth="70.0" text="Round" styleClass="table-header" />
+          <TableColumn fx:id="pickColumn" prefWidth="70.0" text="Pick" styleClass="table-header" />
+          <TableColumn fx:id="playerColumn" prefWidth="200.0" text="Player Name" styleClass="table-header" />
+          <TableColumn fx:id="positionColumn" prefWidth="90.0" text="Position" styleClass="table-header" />
+          <TableColumn fx:id="collegeColumn" prefWidth="250.0" text="College" styleClass="table-header" />
         </columns>
       </TableView>
-      
       <!-- Back Button -->
       <Button fx:id="backButton" layoutX="20.0" layoutY="570.0" onAction="#goBack" text="← Back to Main Menu" styleClass="back-button" />
    </children>

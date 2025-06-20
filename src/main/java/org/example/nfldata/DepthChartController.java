@@ -5,15 +5,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,35 +28,45 @@ import java.util.ResourceBundle;
 public class DepthChartController implements Initializable {
 
     @FXML
-    private TableView<DepthChartPlayer> depthTable;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, String> name;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, Long> age;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, Double> weight;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, String> position;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, Long> rank;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, String> birth;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, Long> debutYear;
+    private TableView<DepthChartPlayer> depthChartTable;
 
     private int teamID;
+    private JSONObject team;
 
     @FXML
     private ImageView teamLogo;
 
-    public void getDepthChartData(ActionEvent event) {
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Label teamName;
+
+    @FXML
+    private TableColumn<DepthChartPlayer, String> positionColumn;
+
+    @FXML
+    private TableColumn<DepthChartPlayer, String> playersColumn;
+
+    @FXML
+    private TableColumn<DepthChartPlayer, String> rankColumn;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        depthChartTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        rankColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getRank())));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        playersColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+    }
+
+    public void setTeam(JSONObject team) {
+        this.team = team;
+        this.teamID = Integer.parseInt((String) team.get("id"));
+        teamName.setText((String) team.get("displayName") + " Depth Chart");
+        getDepthChartData();
+    }
+
+    public void getDepthChartData() {
         getTeamImage();
         String url = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2021/teams/" + teamID + "/depthcharts";
         try {
@@ -66,7 +83,6 @@ public class DepthChartController implements Initializable {
                     String posKey = (String) position;
                     JSONObject posObj = (JSONObject) positions.get(posKey);
                     JSONObject posDetail = (JSONObject) posObj.get("position");
-                    System.out.println((String) posDetail.get("name"));
                     JSONArray athletes = (JSONArray) posObj.get("athletes");
                     for (Object athlete : athletes) {
                         JSONObject athleteObj = (JSONObject) athlete;
@@ -81,7 +97,6 @@ public class DepthChartController implements Initializable {
                         Long age = (Long) root.get("age");
                         String DOB = (String) root.get("dateOfBirth");
                         Long debut = (Long) root.get("debutYear");
-                        System.out.println(fullName + " " + weight + " " + age);
                         if (age == null) {
                             age = 0L;
                         }
@@ -99,11 +114,10 @@ public class DepthChartController implements Initializable {
                             player = new DepthChartPlayer(fullName, age, weight, posKey.toUpperCase(), rank, DOB.substring(0,10), debut);
                         }
                         data.add(player);
-                        System.out.println(rank);
                     }
                 }
             }
-            depthTable.setItems(data);
+            depthChartTable.setItems(data);
 
 
         } catch (Exception e) {
@@ -127,19 +141,16 @@ public class DepthChartController implements Initializable {
         }
     }
 
-    public void setTeamID(int teamID) {
-        this.teamID = teamID;
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        age.setCellValueFactory(new PropertyValueFactory<>("age"));
-        weight.setCellValueFactory(new PropertyValueFactory<>("weight"));
-        position.setCellValueFactory(new PropertyValueFactory<>("position"));
-        rank.setCellValueFactory(new PropertyValueFactory<>("rank"));
-        birth.setCellValueFactory(new PropertyValueFactory<>("DOB"));
-        debutYear.setCellValueFactory(new PropertyValueFactory<>("debut"));
-        depthTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+    @FXML
+    private void goBack() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamOptions.fxml"));
+        Parent root = loader.load();
+        TeamOptionsController controller = loader.getController();
+        controller.setTeam(this.team);
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
     }
 }

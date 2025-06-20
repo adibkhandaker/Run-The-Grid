@@ -36,4 +36,16 @@ public class MainMenuController {
         stage.setScene(scene);
         stage.show();
     }
+
+    public void latestNews(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LatestNews.fxml"));
+        Scene scene = new Scene(loader.load());
+        Stage stage = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void exit(ActionEvent event) {
+        // ... existing code ...
+    }
 }

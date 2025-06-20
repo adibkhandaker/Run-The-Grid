@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="472.0" prefWidth="756.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.TeamSelectionController">
-   <children>
-      <Button layoutX="14.0" layoutY="62.0" mnemonicParsing="false" onAction="#team" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" userData = "22"/>
-      <Button layoutX="200.0" layoutY="62.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ATLANTA FALCONS" userData = "1" />
-      <Button layoutX="388.0" layoutY="62.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="BALTIMORE RAVENS" userData = "33" />
-      <Button layoutX="573.0" layoutY="62.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="BUFFALO BILLS" userData = "2" />
-      <Button layoutX="14.0" layoutY="167.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="200.0" layoutY="167.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="388.0" layoutY="167.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="573.0" layoutY="167.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="14.0" layoutY="255.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="200.0" layoutY="255.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="388.0" layoutY="255.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="573.0" layoutY="255.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="14.0" layoutY="347.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="200.0" layoutY="347.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="388.0" layoutY="347.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-      <Button layoutX="573.0" layoutY="347.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="169.0" text="ARIZONA CARDINALS" />
-   </children>
-</AnchorPane>
+<BorderPane prefHeight="800.0" prefWidth="1200.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.TeamSelectionController">
+    <top>
+        <VBox alignment="CENTER" styleClass="selection-header" BorderPane.alignment="CENTER">
+            <children>
+                <Label styleClass="selection-title" text="Select Your Team" />
+                <Label styleClass="selection-subtitle" text="Choose a team to view their details, schedule, and draft picks." />
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane" BorderPane.alignment="CENTER">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="20.0" styleClass="selection-content-box">
+                    <children>
+                        <Label styleClass="conference-header" text="American Football Conference (AFC)" />
+                        <TilePane fx:id="afcTeamContainer" alignment="CENTER" hgap="25" prefColumns="3" vgap="25" />
+                        <Label styleClass="conference-header" text="National Football Conference (NFC)" />
+                        <TilePane fx:id="nfcTeamContainer" alignment="CENTER" hgap="25" prefColumns="3" vgap="25" />
+                    </children>
+                    <padding>
+                        <Insets bottom="30.0" top="30.0" />
+                    </padding>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <Button fx:id="backButton" onAction="#goBack" styleClass="back-button" text="← Back to Main Menu" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets bottom="20.0" top="10.0" />
+            </BorderPane.margin>
+        </Button>
+    </bottom>
+</BorderPane>
