@@ -14,22 +14,26 @@
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.DepthChartController">
     <children>
         <!-- Header Section -->
-        <VBox layoutX="0.0" layoutY="0.0" prefWidth="1000.0" prefHeight="120.0" styleClass="header-section">
+        <VBox alignment="CENTER" layoutX="0.0" layoutY="0.0" prefWidth="1000.0" styleClass="header-section">
             <children>
                 <HBox alignment="CENTER" spacing="20.0">
                     <children>
                         <ImageView fx:id="teamLogo" fitHeight="80.0" fitWidth="80.0" preserveRatio="true" />
-                        <Label fx:id="teamName" text="Team Name" styleClass="main-title">
+                        <Label fx:id="teamName" text="Team Depth Chart" styleClass="main-title">
                             <font>
                                 <Font name="System Bold" size="32.0" />
                             </font>
                         </Label>
                     </children>
-                    <HBox.margin>
-                        <Insets top="20.0" bottom="10.0" />
-                    </HBox.margin>
+                    <VBox.margin>
+                        <Insets top="10.0" bottom="10.0" />
+                    </VBox.margin>
                 </HBox>
+                <Label fx:id="statusLabel" styleClass="status-label" text="Loading..." visible="false" />
             </children>
+            <padding>
+                <Insets bottom="10.0" />
+            </padding>
         </VBox>
         <!-- Table Section -->
         <TableView fx:id="depthChartTable" layoutX="20.0" layoutY="140.0" prefHeight="420.0" prefWidth="960.0" styleClass="data-table">
@@ -40,6 +44,6 @@
             </columns>
         </TableView>
         <!-- Back Button -->
-        <Button fx:id="backButton" layoutX="20.0" layoutY="570.0" onAction="#goBack" text="← Back to Main Menu" styleClass="back-button" />
+        <Button fx:id="backButton" layoutX="20.0" layoutY="570.0" onAction="#goBack" text="← Back to Team Options" styleClass="back-button" />
     </children>
 </AnchorPane>

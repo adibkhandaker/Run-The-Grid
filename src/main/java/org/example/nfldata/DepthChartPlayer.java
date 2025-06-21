@@ -43,6 +43,10 @@ public class DepthChartPlayer {
         this.weight = weight;
     }
 
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     public String getPosition() {
         return position;
     }
@@ -69,5 +73,9 @@ public class DepthChartPlayer {
     }
     public void setDebut(long debut) {
         this.debut = debut;
+    }
+
+    public long getDebutYear() {
+        return debut;
     }
 }

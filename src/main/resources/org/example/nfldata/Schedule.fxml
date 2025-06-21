@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.ScheduleController">
+    <children>
+        <!-- Header -->
+        <VBox alignment="CENTER" prefWidth="1200.0" spacing="15.0" styleClass="header-section" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label text="NFL Schedule" styleClass="main-title" />
+                <HBox alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Label text="Year:" styleClass="control-label" />
+                        <ChoiceBox fx:id="yearChoice" />
+                        <Label text="Season Type:" styleClass="control-label" />
+                        <ChoiceBox fx:id="seasonTypeChoice" />
+                        <Label text="Week:" styleClass="control-label" />
+                        <ChoiceBox fx:id="weekChoice" />
+                    </children>
+                </HBox>
+                <Label fx:id="statusLabel" styleClass="status-label" visible="false" />
+            </children>
+            <padding>
+                <Insets bottom="15.0" top="15.0" />
+            </padding>
+        </VBox>
+
+        <!-- Content Area -->
+        <ScrollPane fx:id="contentScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutY="140.0" prefHeight="520.0" prefWidth="1200.0" styleClass="scroll-pane" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="130.0">
+            <content>
+                <FlowPane fx:id="gamesPane" hgap="20.0" vgap="20.0" styleClass="games-flow-pane">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                </FlowPane>
+            </content>
+        </ScrollPane>
+
+        <!-- Back Button -->
+        <Button fx:id="backButton" onAction="#goBack" text="← Back to Main Menu" styleClass="back-button" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+    </children>
+</AnchorPane> 

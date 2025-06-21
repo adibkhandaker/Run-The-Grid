@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Separator?>
+
+<AnchorPane prefHeight="1000.0" prefWidth="1600.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.TradeSimulatorController">
+    <children>
+        <BorderPane AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+            <top>
+                <VBox alignment="CENTER" spacing="15.0" BorderPane.alignment="CENTER">
+                    <padding>
+                        <Insets top="25.0" bottom="15.0" left="30.0" right="30.0"/>
+                    </padding>
+                    <children>
+                        <Label text="NFL Trade Simulator" styleClass="main-title" />
+                        
+                        <HBox alignment="CENTER" spacing="30">
+                           <children>
+                              <VBox alignment="CENTER" spacing="5">
+                                 <children>
+                                    <Label text="Your Team" styleClass="section-label"/>
+                                    <ComboBox fx:id="teamASelector" prefWidth="250.0"/>
+                                 </children>
+                              </VBox>
+                              <Label text="↔" styleClass="trade-arrow"/>
+                              <VBox alignment="CENTER" spacing="5">
+                                 <children>
+                                    <Label text="Trading Partner" styleClass="section-label"/>
+                                    <ComboBox fx:id="teamBSelector" prefWidth="250.0"/>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                    </children>
+                </VBox>
+            </top>
+            
+            <center>
+                <HBox alignment="CENTER" spacing="25.0" BorderPane.alignment="CENTER">
+                    <padding>
+                        <Insets top="15.0" bottom="15.0" left="30.0" right="30.0"/>
+                    </padding>
+                    <children>
+                        <!-- Team A Panel -->
+                        <VBox prefWidth="500.0" spacing="15.0" HBox.hgrow="ALWAYS" styleClass="team-panel">
+                            <children>
+                                <Label fx:id="teamAName" text="Select Your Team" styleClass="team-name"/>
+                                
+                                <VBox spacing="12.0" styleClass="offer-section">
+                                    <children>
+                                        <Label text="Players" styleClass="section-label"/>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <children>
+                                                <ComboBox fx:id="teamAPlayerSelector" promptText="Choose a player..." prefWidth="350"/>
+                                                <Button fx:id="addPlayerTeamAButton" text="Add" onAction="#addPlayerToTeamA" styleClass="add-button"/>
+                                            </children>
+                                        </HBox>
+                                        <ListView fx:id="teamAOfferList" prefHeight="150.0" styleClass="offer-list"/>
+                                    </children>
+                                </VBox>
+                                
+                                <VBox spacing="12.0" styleClass="offer-section">
+                                    <children>
+                                        <Label text="Draft Picks" styleClass="section-label"/>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <children>
+                                                <ComboBox fx:id="teamAPickSelector" promptText="Choose a draft pick..." prefWidth="350"/>
+                                                <Button fx:id="addPickTeamAButton" text="Add" onAction="#addPickToTeamA" styleClass="add-button"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Trade Hub Panel -->
+                        <VBox alignment="CENTER" spacing="20.0" prefWidth="250.0" styleClass="trade-hub">
+                            <children>
+                                <VBox alignment="CENTER" spacing="12.0" styleClass="value-display">
+                                    <children>
+                                        <Label text="Trade Values" styleClass="section-label"/>
+                                        <VBox alignment="CENTER" spacing="5">
+                                           <children>
+                                              <Label text="Your Team" styleClass="value-label"/>
+                                              <Label fx:id="teamAValueLabel" text="0" styleClass="value-number"/>
+                                           </children>
+                                        </VBox>
+                                        <Separator styleClass="value-separator"/>
+                                        <VBox alignment="CENTER" spacing="5">
+                                           <children>
+                                              <Label text="Their Team" styleClass="value-label"/>
+                                              <Label fx:id="teamBValueLabel" text="0" styleClass="value-number"/>
+                                           </children>
+                                        </VBox>
+                                    </children>
+                                </VBox>
+                                
+                                <VBox alignment="CENTER" spacing="12.0" styleClass="trade-interest">
+                                    <children>
+                                        <Label text="Trade Interest" styleClass="section-label"/>
+                                        <ProgressBar fx:id="tradeInterestBar" prefWidth="200.0" progress="0.0" styleClass="interest-bar" />
+                                    </children>
+                                </VBox>
+                                
+                                <VBox alignment="CENTER" spacing="12.0">
+                                    <children>
+                                        <Button fx:id="proposeTradeButton" text="Propose Trade" onAction="#proposeTrade" styleClass="propose-button"/>
+                                        <Label fx:id="tradeStatusLabel" text="Ready to trade..." styleClass="status-label"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+
+                        <!-- Team B Panel -->
+                        <VBox prefWidth="500.0" spacing="15.0" HBox.hgrow="ALWAYS" styleClass="team-panel">
+                            <children>
+                                <Label fx:id="teamBName" text="Select Trading Partner" styleClass="team-name"/>
+                                
+                                <VBox spacing="12.0" styleClass="offer-section">
+                                    <children>
+                                        <Label text="Players" styleClass="section-label"/>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <children>
+                                                <ComboBox fx:id="teamBPlayerSelector" promptText="Choose a player..." prefWidth="350"/>
+                                                <Button fx:id="addPlayerTeamBButton" text="Add" onAction="#addPlayerToTeamB" styleClass="add-button"/>
+                                            </children>
+                                        </HBox>
+                                        <ListView fx:id="teamBOfferList" prefHeight="150.0" styleClass="offer-list"/>
+                                    </children>
+                                </VBox>
+                                
+                                <VBox spacing="12.0" styleClass="offer-section">
+                                    <children>
+                                        <Label text="Draft Picks" styleClass="section-label"/>
+                                        <HBox spacing="8" alignment="CENTER_LEFT">
+                                            <children>
+                                                <ComboBox fx:id="teamBPickSelector" promptText="Choose a draft pick..." prefWidth="350"/>
+                                                <Button fx:id="addPickTeamBButton" text="Add" onAction="#addPickToTeamB" styleClass="add-button"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </center>
+            
+            <bottom>
+                <HBox alignment="CENTER" spacing="25.0" BorderPane.alignment="CENTER">
+                   <padding>
+                       <Insets top="15.0" bottom="25.0"/>
+                   </padding>
+                    <children>
+                        <Button fx:id="resetButton" text="Reset Trade" onAction="#resetTrade" styleClass="secondary-button"/>
+                        <Button fx:id="backButton" text="Back to Main Menu" onAction="#goBack" styleClass="secondary-button"/>
+                    </children>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </children>
+</AnchorPane> 

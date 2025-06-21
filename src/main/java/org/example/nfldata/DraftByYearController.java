@@ -75,7 +75,7 @@ public class DraftByYearController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int i = 2015; i <= 2025; ++i) {
+        for (int i = 1970; i <= 2025; ++i) {
             yearChoice.getItems().add(i);
         }
         for (int i = 1; i <= 7; ++i) {
@@ -124,15 +124,20 @@ public class DraftByYearController implements Initializable {
         };
 
         task.setOnSucceeded(e -> {
-            allDraftData.setAll(task.getValue());
+            ObservableList<DraftPlayer2025> result = task.getValue();
+            if (result.isEmpty()) {
+                statusLabel.setText("No data available for " + selectedYear);
+            } else {
+                statusLabel.setVisible(false);
+            }
+            allDraftData.setAll(result);
             draftTable.setItems(allDraftData);
             roundChoice.setVisible(true);
-            statusLabel.setVisible(false);
             handleRoundSelection(); // Filter for "All Rounds" initially
         });
 
         task.setOnFailed(e -> {
-            statusLabel.setText("Failed to load draft data.");
+            statusLabel.setText("Failed to load draft data for " + selectedYear + ".");
             task.getException().printStackTrace();
         });
 
@@ -141,8 +146,13 @@ public class DraftByYearController implements Initializable {
 
     private ObservableList<DraftPlayer2025> fetchDraftDataForYear(int year) throws IOException, ParseException {
         ObservableList<DraftPlayer2025> data = FXCollections.observableArrayList();
-        String url = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/" + year + "/draft/rounds?limit=7";
+        String url = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/" + year + "/draft/rounds?limit=20";
         HttpURLConnection connection = APIController.fetchAPIResponse(url);
+
+        if (connection.getResponseCode() == 404) {
+            return data;
+        }
+
         String response = APIController.readAPIResponse(connection);
 
         JSONParser parser = new JSONParser();

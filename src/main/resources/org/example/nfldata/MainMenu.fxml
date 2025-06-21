@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="495.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.MainMenuController"
-            stylesheets="@styles.css">
-   <children>
-      <Button layoutX="62.0" layoutY="212.0" mnemonicParsing="false" onAction="#draftByYear" prefHeight="71.0" prefWidth="196.0" text="Draft By Year" />
-      <Button layoutX="265.0" layoutY="212.0" mnemonicParsing="false" onAction="#teamSelection" prefHeight="71.0" prefWidth="196.0" text="Team Information" />
-      <Button layoutX="468.0" layoutY="212.0" mnemonicParsing="false" onAction="#latestNews" prefHeight="71.0" prefWidth="196.0" text="Latest News" />
-      <Label id="titleLabel" layoutX="226.0" layoutY="44.0" text="NFL Data Hub" />
-   </children>
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.MainMenuController">
+    <children>
+        <VBox alignment="CENTER" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label fx:id="mainTitle" styleClass="main-title" text="NFL Data Hub" />
+                <Button onAction="#draftByYear" prefHeight="50.0" prefWidth="250.0" text="Draft By Year" styleClass="menu-button" />
+                <Button onAction="#teamSelection" prefHeight="50.0" prefWidth="250.0" text="Team Pages" styleClass="menu-button" />
+                <Button onAction="#latestNews" prefHeight="50.0" prefWidth="250.0" text="Latest News" styleClass="menu-button" />
+                <Button onAction="#scheduleVisualizer" prefHeight="50.0" prefWidth="250.0" text="Schedule" styleClass="menu-button" />
+                <Button onAction="#openTradeSimulator" prefHeight="50.0" prefWidth="250.0" text="Trade Simulator" styleClass="menu-button" />
+                <Button onAction="#exit" prefHeight="50.0" prefWidth="250.0" text="Exit" styleClass="menu-button-exit" />
+            </children>
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+        </VBox>
+    </children>
 </AnchorPane>

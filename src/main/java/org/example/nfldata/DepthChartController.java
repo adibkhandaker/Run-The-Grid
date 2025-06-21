@@ -2,12 +2,13 @@ package org.example.nfldata;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,8 +18,6 @@ import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -29,46 +28,46 @@ public class DepthChartController implements Initializable {
 
     @FXML
     private TableView<DepthChartPlayer> depthChartTable;
+    @FXML
+    private ImageView teamLogo;
+    @FXML
+    private Button backButton;
+    @FXML
+    private Label teamName;
+    @FXML
+    private TableColumn<DepthChartPlayer, String> positionColumn;
+    @FXML
+    private TableColumn<DepthChartPlayer, String> playersColumn;
+    @FXML
+    private TableColumn<DepthChartPlayer, String> rankColumn;
+    @FXML
+    private Label statusLabel;
 
     private int teamID;
     private JSONObject team;
 
-    @FXML
-    private ImageView teamLogo;
-
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private Label teamName;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, String> positionColumn;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, String> playersColumn;
-
-    @FXML
-    private TableColumn<DepthChartPlayer, String> rankColumn;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         depthChartTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        rankColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(String.valueOf(cellData.getValue().getRank())));
+        rankColumn.setCellValueFactory(new PropertyValueFactory<>("rank"));
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
         playersColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        statusLabel.setVisible(false);
     }
 
     public void setTeam(JSONObject team) {
         this.team = team;
         this.teamID = Integer.parseInt((String) team.get("id"));
         teamName.setText((String) team.get("displayName") + " Depth Chart");
+        getTeamImage();
         getDepthChartData();
     }
 
     public void getDepthChartData() {
-        getTeamImage();
-        String url = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2021/teams/" + teamID + "/depthcharts";
+        statusLabel.setText("Loading depth chart...");
+        statusLabel.setVisible(true);
+
+        String url = "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2025/teams/" + teamID + "/depthcharts";
         try {
             ObservableList<DepthChartPlayer> data = FXCollections.observableArrayList();
             HttpURLConnection apiConnection = APIController.fetchAPIResponse(url);
@@ -76,51 +75,30 @@ public class DepthChartController implements Initializable {
             JSONParser parser = new JSONParser();
             JSONObject results = (JSONObject) parser.parse(JSONResponse);
             JSONArray items = (JSONArray) results.get("items");
+
             for (Object item : items) {
                 JSONObject itemObj = (JSONObject) item;
                 JSONObject positions = (JSONObject) itemObj.get("positions");
                 for (Object position : positions.keySet()) {
                     String posKey = (String) position;
-                    JSONObject posObj = (JSONObject) positions.get(posKey);
-                    JSONObject posDetail = (JSONObject) posObj.get("position");
-                    JSONArray athletes = (JSONArray) posObj.get("athletes");
+                    JSONArray athletes = (JSONArray) ((JSONObject) positions.get(posKey)).get("athletes");
                     for (Object athlete : athletes) {
                         JSONObject athleteObj = (JSONObject) athlete;
                         JSONObject athleteDetail = (JSONObject) athleteObj.get("athlete");
-
                         String athleteAPI = (String) athleteDetail.get("$ref");
                         HttpURLConnection URLConnection = APIController.fetchAPIResponse(athleteAPI);
                         String response = APIController.readAPIResponse(URLConnection);
                         JSONObject root = (JSONObject) parser.parse(response);
                         String fullName = (String) root.get("fullName");
-                        Double weight = (Double) root.get("weight");
-                        Long age = (Long) root.get("age");
-                        String DOB = (String) root.get("dateOfBirth");
-                        Long debut = (Long) root.get("debutYear");
-                        if (age == null) {
-                            age = 0L;
-                        }
-                        if (debut == null) {
-                            debut = 0L;
-                        }
-                        if (DOB == null) {
-                            DOB = "x";
-                        }
                         Long rank = (Long) athleteObj.get("rank");
-                        DepthChartPlayer player = null;
-                        if (DOB.equals("x")) {
-                            player = new DepthChartPlayer(fullName, age, weight, posKey.toUpperCase(), rank, DOB, debut);
-                        } else {
-                            player = new DepthChartPlayer(fullName, age, weight, posKey.toUpperCase(), rank, DOB.substring(0,10), debut);
-                        }
-                        data.add(player);
+                        data.add(new DepthChartPlayer(fullName, 0, 0.0, posKey.toUpperCase(), rank, "N/A", 0L));
                     }
                 }
             }
             depthChartTable.setItems(data);
-
-
+            statusLabel.setVisible(false);
         } catch (Exception e) {
+            statusLabel.setText("Failed to load depth chart.");
             e.printStackTrace();
         }
     }
@@ -154,3 +132,4 @@ public class DepthChartController implements Initializable {
         stage.show();
     }
 }
+
