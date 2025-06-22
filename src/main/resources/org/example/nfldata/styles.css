@@ -1306,4 +1306,124 @@
     -fx-background-color: rgba(27, 38, 59, 0.8);
     -fx-border-color: #415a77;
     -fx-border-width: 2px 0 0 0;
+}
+
+/* ==========================================================================
+   Team Statistics Styles
+   ========================================================================== */
+
+.stats-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #45a049;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.stats-button:hover {
+    -fx-background-color: #45a049;
+    -fx-border-color: #4CAF50;
+}
+
+.load-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #1976D2;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+.load-button:hover {
+    -fx-background-color: #1976D2;
+    -fx-border-color: #2196F3;
+}
+
+.stats-section {
+    -fx-background-color: rgba(27, 38, 59, 0.6);
+    -fx-background-radius: 8px;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 15px;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10px 0;
+    -fx-border-color: #415a77;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.stats-table {
+    -fx-background-color: transparent;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+.stats-table .column-header-background {
+    -fx-background-color: #415a77;
+    -fx-background-radius: 6px 6px 0 0;
+}
+
+.stats-table .column-header, .stats-table .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: #778da9;
+    -fx-border-width: 0 1px 0 0;
+}
+
+.stats-table .column-header .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-padding: 8px 4px;
+}
+
+.stats-table .table-row-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e0e1dd;
+    -fx-font-size: 12px;
+}
+
+.stats-table .table-row-cell:odd {
+    -fx-background-color: rgba(65, 90, 119, 0.1);
+}
+
+.stats-table .table-row-cell:selected {
+    -fx-background-color: #415a77;
+}
+
+.stats-table .table-row-cell:hover {
+    -fx-background-color: rgba(119, 141, 169, 0.2);
+}
+
+.stats-table .table-cell {
+    -fx-text-fill: #e0e1dd;
+    -fx-padding: 6px 8px;
+    -fx-border-color: transparent transparent #415a77 transparent;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.status-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+    -fx-background-color: rgba(27, 38, 59, 0.8);
+    -fx-background-radius: 6px;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
 } 

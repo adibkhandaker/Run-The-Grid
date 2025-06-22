@@ -428,12 +428,36 @@ public class TeamScheduleController {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamOptions.fxml"));
         Parent root = loader.load();
         TeamOptionsController controller = loader.getController();
-        controller.setTeam(this.team);
-        Stage stage = (Stage) backButton.getScene().getWindow();
+        controller.setTeam(team);
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        Stage stage = (Stage) backButton.getScene().getWindow();
         stage.setScene(scene);
-        stage.show();
+    }
+
+    @FXML
+    private void viewTeamStats() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamStats.fxml"));
+        Parent root = loader.load();
+        TeamStatsController controller = loader.getController();
+
+        String logoUrl = "";
+        if (team.containsKey("logos")) {
+            org.json.simple.JSONArray logos = (org.json.simple.JSONArray) team.get("logos");
+            if (logos != null && !logos.isEmpty()) {
+                JSONObject logo = (JSONObject) logos.get(0);
+                if (logo != null && logo.containsKey("href")) {
+                    logoUrl = (String) logo.get("href");
+                }
+            }
+        }
+        
+        // Pass team information
+        controller.setTeamInfo(String.valueOf(teamID), (String) team.get("displayName"), logoUrl);
+        controller.setPreviousScene(backButton.getScene());
+        
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) backButton.getScene().getWindow();
+        stage.setScene(scene);
     }
 
     public static class ScheduleEntry {

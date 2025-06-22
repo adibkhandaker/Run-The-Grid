@@ -49,6 +49,7 @@
             <ChoiceBox fx:id="yearChoice" prefWidth="150.0"/>
             <Button fx:id="viewToggleButton" text="Switch to Week View" onAction="#toggleView" styleClass="toggle-button"/>
             <Button fx:id="playoffsButton" text="View Playoffs" onAction="#viewPlayoffs" styleClass="playoffs-button"/>
+            <Button fx:id="teamStatsButton" text="Team Statistics" onAction="#viewTeamStats" styleClass="stats-button"/>
         </children>
     </HBox>
 

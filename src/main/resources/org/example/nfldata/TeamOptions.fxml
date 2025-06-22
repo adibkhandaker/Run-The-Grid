@@ -109,6 +109,28 @@
                                 <Button onAction="#depthChart" styleClass="option-button" text="View Depth Chart" />
                             </children>
                         </VBox>
+
+                        <!-- Team Statistics Card -->
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="15.0" styleClass="option-card">
+                            <children>
+                                <Label text="📊" styleClass="option-icon">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Team Statistics" styleClass="option-title">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label text="View team-wide stats and league rankings" styleClass="option-description" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button onAction="#teamStats" styleClass="option-button" text="View Team Stats" />
+                            </children>
+                        </VBox>
                     </children>
                 </HBox>
             </children>

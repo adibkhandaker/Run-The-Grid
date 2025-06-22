@@ -66,6 +66,30 @@ public class TeamOptionsController {
         stage.show();
     }
 
+    public void teamStats(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamStats.fxml"));
+        Parent root = loader.load();
+        TeamStatsController controller = loader.getController();
+
+        // Extract logo URL from the team's JSON data
+        String logoUrl = "";
+        if (team.containsKey("logos")) {
+            org.json.simple.JSONArray logos = (org.json.simple.JSONArray) team.get("logos");
+            if (!logos.isEmpty()) {
+                JSONObject logo = (JSONObject) logos.get(0);
+                logoUrl = (String) logo.get("href");
+            }
+        }
+
+        controller.setTeamInfo(String.valueOf(teamID), (String) team.get("displayName"), logoUrl);
+        controller.setPreviousScene(((Node) event.getSource()).getScene());
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+        stage.setScene(scene);
+        stage.show();
+    }
+
     @FXML
     private void goBack() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamSelectionOne.fxml"));

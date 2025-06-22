@@ -101,6 +101,14 @@ public class APIController {
         return null;
     }
 
+    public static String getRawJsonFromUrl(String urlString) throws IOException {
+        HttpURLConnection connection = fetchAPIResponse(urlString);
+        if (connection != null && connection.getResponseCode() == 200) {
+            return readAPIResponse(connection);
+        }
+        return null;
+    }
+
     public static HttpURLConnection fetchAPIResponse(String urlString) throws IOException {
         try {
             URL url =  new URL(urlString);
