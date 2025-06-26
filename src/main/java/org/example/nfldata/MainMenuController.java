@@ -61,6 +61,28 @@ public class MainMenuController implements Initializable {
         }
     }
 
+    @FXML
+    public void openNFLRecords(ActionEvent event) {
+        loadScene("NFLRecords.fxml", event);
+    }
+
+    @FXML
+    public void openMatchupPredictor(ActionEvent event) {
+        try {
+            Scene currentScene = ((Node) event.getSource()).getScene();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("MatchupPredictor.fxml"));
+            Parent root = loader.load();
+
+            MatchupPredictorController controller = loader.getController();
+            controller.setPreviousScene(currentScene);
+
+            Stage stage = (Stage) currentScene.getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadScene(String fxmlFile, ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));

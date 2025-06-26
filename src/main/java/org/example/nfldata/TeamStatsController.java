@@ -53,15 +53,30 @@ public class TeamStatsController {
     @FXML
     private VBox funFactsContainer;
 
+    // New fields for Stat Leaders tab
+    @FXML
+    private VBox leadersContainer;
+    @FXML
+    private VBox leadersVBox;
+    
+    // Simple category filter
+    @FXML
+    private ChoiceBox<String> categoryFilter;
+
     private String currentTeamId;
     private String currentTeamName;
     private Scene previousScene;
     private Map<String, StatData> allStats = new HashMap<>();
+    private Map<String, String> playerNameCache = new HashMap<>();
+    
+    // Leader data storage
+    private List<LeaderData> allLeaders = new ArrayList<>();
 
     @FXML
     public void initialize() {
         setupYearChoice();
         setupEventHandlers();
+        setupSortingControls();
     }
 
     private void setupYearChoice() {
@@ -77,6 +92,86 @@ public class TeamStatsController {
     private void setupEventHandlers() {
         backButton.setOnAction(event -> goBack());
         loadStatsButton.setOnAction(event -> loadTeamStats());
+    }
+
+    private void setupSortingControls() {
+        // Setup category filter options
+        List<String> filterOptions = Arrays.asList(
+            "All Categories", "Offense", "Defense", "Special Teams"
+        );
+        categoryFilter.setItems(javafx.collections.FXCollections.observableArrayList(filterOptions));
+        categoryFilter.setValue("All Categories");
+        
+        // Setup event handler
+        categoryFilter.setOnAction(event -> filterLeadersByCategory());
+    }
+    
+    private void filterLeadersByCategory() {
+        String selectedCategory = categoryFilter.getValue();
+        if (selectedCategory == null) return;
+        
+        displayFilteredLeaders(selectedCategory);
+    }
+    
+    private void displayFilteredLeaders(String category) {
+        leadersVBox.getChildren().clear();
+        
+        List<LeaderData> filteredLeaders = new ArrayList<>();
+        
+        // Filter leaders based on category
+        for (LeaderData leader : allLeaders) {
+            if (category.equals("All Categories") || isInCategory(leader.category, category)) {
+                filteredLeaders.add(leader);
+            }
+        }
+        
+        // Group by category and display
+        Map<String, List<LeaderData>> groupedLeaders = new HashMap<>();
+        for (LeaderData leader : filteredLeaders) {
+            groupedLeaders.computeIfAbsent(leader.category, k -> new ArrayList<>()).add(leader);
+        }
+        
+        // Display grouped leaders
+        for (Map.Entry<String, List<LeaderData>> entry : groupedLeaders.entrySet()) {
+            VBox categorySection = new VBox(12);
+            categorySection.getStyleClass().add("leader-category-section");
+            
+            Label headerLabel = new Label(entry.getKey());
+            headerLabel.getStyleClass().add("category-header");
+            categorySection.getChildren().add(headerLabel);
+            
+            for (LeaderData leader : entry.getValue()) {
+                HBox leaderCard = createLeaderCard(leader.playerName, leader.displayValue, leader.value, leader.categoryType);
+                categorySection.getChildren().add(leaderCard);
+            }
+            
+            leadersVBox.getChildren().add(categorySection);
+        }
+    }
+    
+    private boolean isInCategory(String leaderCategory, String filterCategory) {
+        switch (filterCategory) {
+            case "Offense":
+                return leaderCategory.contains("Passing") || 
+                       leaderCategory.contains("Rushing") || 
+                       leaderCategory.contains("Receiving") ||
+                       leaderCategory.contains("Touchdowns") ||
+                       leaderCategory.contains("Yards");
+            case "Defense":
+                return leaderCategory.contains("Tackles") || 
+                       leaderCategory.contains("Sacks") || 
+                       leaderCategory.contains("Interceptions") ||
+                       leaderCategory.contains("Forced Fumbles") ||
+                       leaderCategory.contains("Fumble Recoveries");
+            case "Special Teams":
+                return leaderCategory.contains("Field Goals") || 
+                       leaderCategory.contains("Extra Points") || 
+                       leaderCategory.contains("Punting") ||
+                       leaderCategory.contains("Kickoff") ||
+                       leaderCategory.contains("Punt Return");
+            default:
+                return true;
+        }
     }
 
     public void setTeamInfo(String teamId, String teamName, String logoUrl) {
@@ -118,25 +213,14 @@ public class TeamStatsController {
         new Thread(() -> {
             try {
                 String year = yearChoice.getValue();
-                String url = String.format("http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/%s/types/2/teams/%s/statistics", year, currentTeamId);
                 
-                String jsonResponse = APIController.getRawJsonFromUrl(url);
-                if (jsonResponse == null) {
-                    Platform.runLater(() -> showStatus("Failed to load team statistics", true));
-                    return;
-                }
-
-                JSONParser parser = new JSONParser();
-                JSONObject statsJson = (JSONObject) parser.parse(jsonResponse);
+                // Load team statistics
+                loadTeamStatisticsData(year);
                 
-                JSONObject splits = (JSONObject) statsJson.get("splits");
-                JSONArray categories = (JSONArray) splits.get("categories");
-
-                // Parse all stats into our data structure
-                parseAllStats(categories);
+                // Load team stat leaders
+                loadTeamStatLeaders(year);
 
                 Platform.runLater(() -> {
-                    createVisualStatsDisplay();
                     showStatus("Statistics loaded successfully", false);
                 });
 
@@ -145,6 +229,168 @@ public class TeamStatsController {
                 Platform.runLater(() -> showStatus("Error loading statistics: " + e.getMessage(), true));
             }
         }).start();
+    }
+
+    private void loadTeamStatisticsData(String year) {
+        try {
+            String url = String.format("http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/%s/types/2/teams/%s/statistics", year, currentTeamId);
+            
+            String jsonResponse = APIController.getRawJsonFromUrl(url);
+            if (jsonResponse == null) {
+                Platform.runLater(() -> showStatus("Failed to load team statistics", true));
+                return;
+            }
+
+            JSONParser parser = new JSONParser();
+            JSONObject statsJson = (JSONObject) parser.parse(jsonResponse);
+            
+            JSONObject splits = (JSONObject) statsJson.get("splits");
+            JSONArray categories = (JSONArray) splits.get("categories");
+
+            // Parse all stats into our data structure
+            parseAllStats(categories);
+
+            Platform.runLater(() -> {
+                createVisualStatsDisplay();
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Platform.runLater(() -> showStatus("Error loading team statistics: " + e.getMessage(), true));
+        }
+    }
+
+    private void loadTeamStatLeaders(String year) {
+        try {
+            String url = String.format("https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/%s/types/2/teams/%s/leaders", year, currentTeamId);
+            
+            String jsonResponse = APIController.getRawJsonFromUrl(url);
+            if (jsonResponse == null) {
+                Platform.runLater(() -> showStatus("Failed to load team stat leaders", true));
+                return;
+            }
+
+            JSONParser parser = new JSONParser();
+            JSONObject leadersJson = (JSONObject) parser.parse(jsonResponse);
+            
+            JSONArray categories = (JSONArray) leadersJson.get("categories");
+
+            Platform.runLater(() -> {
+                displayTeamStatLeaders(categories);
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Platform.runLater(() -> showStatus("Error loading team stat leaders: " + e.getMessage(), true));
+        }
+    }
+
+    private void displayTeamStatLeaders(JSONArray categories) {
+        leadersVBox.getChildren().clear();
+        allLeaders.clear();
+        
+        if (categories == null || categories.isEmpty()) {
+            Label noDataLabel = new Label("No stat leaders data available for this team and season.");
+            noDataLabel.getStyleClass().add("no-data-label");
+            leadersVBox.getChildren().add(noDataLabel);
+            return;
+        }
+
+        for (Object categoryObj : categories) {
+            JSONObject category = (JSONObject) categoryObj;
+            String categoryName = (String) category.get("displayName");
+            String shortDisplayName = (String) category.get("shortDisplayName");
+            JSONArray leaders = (JSONArray) category.get("leaders");
+
+            if (leaders != null && !leaders.isEmpty()) {
+                // Add leaders for this category
+                for (Object leaderObj : leaders) {
+                    JSONObject leader = (JSONObject) leaderObj;
+                    String displayValue = (String) leader.get("displayValue");
+                    Double value = (Double) leader.get("value");
+                    JSONObject athlete = (JSONObject) leader.get("athlete");
+                    
+                    if (athlete != null) {
+                        String athleteRef = (String) athlete.get("$ref");
+                        String playerName = getPlayerName(athleteRef);
+                        
+                        LeaderData leaderData = new LeaderData(
+                            playerName, displayValue, value, shortDisplayName, 
+                            categoryName, "", athleteRef
+                        );
+                        allLeaders.add(leaderData);
+                    }
+                }
+            }
+        }
+        
+        // Display all leaders initially
+        displayFilteredLeaders("All Categories");
+    }
+
+    private HBox createLeaderCard(String playerName, String displayValue, Double value, String categoryType) {
+        HBox card = new HBox(15);
+        card.getStyleClass().add("leader-card");
+        card.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        
+        // Player name and position
+        VBox playerInfo = new VBox(2);
+        Label nameLabel = new Label(playerName);
+        nameLabel.getStyleClass().add("player-name");
+        playerInfo.getChildren().add(nameLabel);
+        
+        // Stat line
+        Label statLabel = new Label(displayValue);
+        statLabel.getStyleClass().add("stat-line");
+        
+        // Category indicator
+        Label categoryLabel = new Label(categoryType);
+        categoryLabel.getStyleClass().add("category-indicator");
+        
+        card.getChildren().addAll(playerInfo, statLabel, categoryLabel);
+        
+        return card;
+    }
+
+    private String getPlayerName(String athleteRef) {
+        if (playerNameCache.containsKey(athleteRef)) {
+            return playerNameCache.get(athleteRef);
+        }
+        
+        try {
+            String jsonResponse = APIController.getRawJsonFromUrl(athleteRef);
+            if (jsonResponse != null) {
+                JSONParser parser = new JSONParser();
+                JSONObject athlete = (JSONObject) parser.parse(jsonResponse);
+                
+                String firstName = (String) athlete.get("firstName");
+                String lastName = (String) athlete.get("lastName");
+                
+                // Handle nested position object
+                String position = null;
+                Object positionObj = athlete.get("position");
+                if (positionObj instanceof JSONObject) {
+                    JSONObject positionJson = (JSONObject) positionObj;
+                    position = (String) positionJson.get("displayName");
+                } else if (positionObj instanceof String) {
+                    position = (String) positionObj;
+                }
+                
+                String fullName = (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+                String displayName = fullName.trim();
+                
+                if (position != null && !position.isEmpty()) {
+                    displayName += " (" + position + ")";
+                }
+                
+                playerNameCache.put(athleteRef, displayName);
+                return displayName;
+            }
+        } catch (Exception e) {
+            System.err.println("Error fetching player name: " + e.getMessage());
+        }
+        
+        return "Unknown Player";
     }
 
     private void parseAllStats(JSONArray categories) {
@@ -737,6 +983,8 @@ public class TeamStatsController {
         defenseGrid.getChildren().clear();
         specialGrid.getChildren().clear();
         funFactsContainer.getChildren().clear();
+        leadersVBox.getChildren().clear();
+        allLeaders.clear();
     }
 
     private void showStatus(String message, boolean isError) {
@@ -761,6 +1009,28 @@ public class TeamStatsController {
             this.displayValue = displayValue;
             this.rankDisplayValue = rankDisplayValue;
             this.category = category;
+        }
+    }
+    
+    // Data class for leader information
+    private static class LeaderData {
+        String playerName;
+        String displayValue;
+        Double value;
+        String categoryType;
+        String category;
+        String position;
+        String athleteRef;
+
+        public LeaderData(String playerName, String displayValue, Double value, String categoryType, 
+                         String category, String position, String athleteRef) {
+            this.playerName = playerName;
+            this.displayValue = displayValue;
+            this.value = value;
+            this.categoryType = categoryType;
+            this.category = category;
+            this.position = position;
+            this.athleteRef = athleteRef;
         }
     }
 } 

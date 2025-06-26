@@ -14,10 +14,135 @@
 }
 
 .main-title {
-    -fx-font-size: 36px;
-    -fx-text-fill: #ffffff;
+    -fx-font-size: 42px;
+    -fx-text-fill: linear-gradient(to right, #ffffff 0%, #9ab 50%, #e0e1dd 100%);
     -fx-font-weight: bold;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0.5, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 12, 0.4, 0, 2);
+}
+
+/* ==========================================================================
+   TabPane Styles for Team Stats
+   ========================================================================== */
+
+.stats-tab-pane {
+    -fx-background-color: transparent;
+    -fx-tab-min-width: 150px;
+    -fx-tab-min-height: 40px;
+}
+
+.stats-tab-pane .tab-header-background {
+    -fx-background-color: #1b263b;
+    -fx-border-color: #415a77;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.stats-tab-pane .tab-header-area .tab-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.stats-tab-pane .tab {
+    -fx-background-color: #415a77;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: #778da9;
+    -fx-border-width: 1px 1px 0 1px;
+    -fx-border-radius: 8px 8px 0 0;
+    -fx-padding: 8px 16px;
+}
+
+.stats-tab-pane .tab:hover {
+    -fx-background-color: #5a7698;
+}
+
+.stats-tab-pane .tab:selected {
+    -fx-background-color: #778da9;
+    -fx-border-color: #9ab;
+}
+
+.stats-tab-pane .tab .tab-label {
+    -fx-text-fill: #e0e1dd;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.stats-tab-pane .tab-header-area .tab-header .tab-pane {
+    -fx-background-color: transparent;
+}
+
+/* ==========================================================================
+   Stat Leaders Styles
+   ========================================================================== */
+
+.leaders-container {
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+.leader-category-section {
+    -fx-spacing: 12px;
+    -fx-padding: 0;
+}
+
+.category-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0 0 8px 0;
+    -fx-border-color: #778da9;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-radius: 0;
+}
+
+.leader-card {
+    -fx-background-color: #1b263b;
+    -fx-background-radius: 8px;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-padding: 16px 20px;
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0.2, 0, 2);
+}
+
+.leader-card:hover {
+    -fx-background-color: #2a3a4a;
+    -fx-border-color: #5a7698;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0.3, 0, 3);
+}
+
+.player-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-min-width: 200px;
+}
+
+.stat-line {
+    -fx-font-size: 14px;
+    -fx-font-family: "Consolas", "Monaco", monospace;
+    -fx-text-fill: #e0e1dd;
+    -fx-font-weight: normal;
+    -fx-min-width: 250px;
+}
+
+.category-indicator {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #778da9;
+    -fx-background-color: #415a77;
+    -fx-background-radius: 12px;
+    -fx-padding: 4px 12px;
+    -fx-min-width: 60px;
+    -fx-alignment: center;
+}
+
+.no-data-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #a0a0a0;
+    -fx-font-style: italic;
+    -fx-alignment: center;
+    -fx-padding: 40px;
 }
 
 /* ==========================================================================
@@ -25,21 +150,25 @@
    ========================================================================== */
 
 .button, .menu-button, .back-button {
-    -fx-background-color: #415a77; /* Muted Blue */
+    -fx-background-color: linear-gradient(to bottom, #415a77, #2a3a4a); /* Gradient Blue */
     -fx-text-fill: #e0e1dd;
     -fx-font-weight: bold;
+    -fx-font-size: 14px;
     -fx-border-color: #778da9; /* Lighter Blue-Gray */
     -fx-border-width: 1px;
-    -fx-border-radius: 8px;
-    -fx-background-radius: 8px;
-    -fx-padding: 10px 20px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-padding: 12px 20px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.2, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0.3, 0, 2);
 }
 
 .button:hover, .menu-button:hover, .back-button:hover {
-    -fx-background-color: #5a7698; /* Lighter Muted Blue */
+    -fx-background-color: linear-gradient(to bottom, #5a7698, #415a77); /* Lighter Gradient */
     -fx-border-color: #9ab;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 8, 0.3, 0, 3);
 }
 
 .button:pressed, .menu-button:pressed, .back-button:pressed {
@@ -70,7 +199,7 @@
 
 .status-label {
     -fx-font-size: 14px;
-    -fx-text-fill: #ffc107; /* Amber */
+    -fx-text-fill: #9ab; /* Changed from Amber */
     -fx-font-weight: bold;
 }
 
@@ -220,7 +349,7 @@
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #1b263b; /* Darker Blue */
+    -fx-background-color: #1b263b;
 }
 
 .table-view .column-header, .table-view .filler {
@@ -274,7 +403,7 @@
 
 .status-label {
     -fx-font-size: 14px;
-    -fx-text-fill: #ffc107; /* Amber for status updates */
+    -fx-text-fill: #9ab; /* Changed from Amber for status updates */
     -fx-font-weight: bold;
 }
 
@@ -368,7 +497,7 @@
 
 .status-label {
     -fx-font-size: 14px;
-    -fx-text-fill: #ffc107; /* Amber for status updates */
+    -fx-text-fill: #9ab; /* Changed from Amber for status updates */
     -fx-font-weight: bold;
 }
 
@@ -1104,7 +1233,7 @@
 
 .status-label {
     -fx-font-size: 14px;
-    -fx-text-fill: #ffc107; /* Amber for status updates */
+    -fx-text-fill: #9ab; /* Changed from Amber for status updates */
     -fx-font-weight: bold;
 }
 
@@ -1129,8 +1258,9 @@
 
 .trade-arrow {
     -fx-font-size: 20px;
-    -fx-text-fill: #ffc107;
-    -fx-font-weight: bold;
+    -fx-text-fill: #9ab;
+    -fx-font-weight: normal;
+    -fx-opacity: 0.8;
 }
 
 .team-panel {
@@ -1206,8 +1336,8 @@
 .trade-hub {
     -fx-background-color: rgba(27, 38, 59, 0.7);
     -fx-background-radius: 12px;
-    -fx-border-color: #ffc107;
-    -fx-border-width: 2px;
+    -fx-border-color: #5a7698;
+    -fx-border-width: 1px;
     -fx-border-radius: 12px;
     -fx-padding: 20px;
 }
@@ -1262,26 +1392,26 @@
 }
 
 .interest-bar .bar {
-    -fx-background-color: linear-gradient(to right, #ff6b6b, #ffc107, #4CAF50);
+    -fx-background-color: linear-gradient(to right, #ff6b6b, #9ab, #4CAF50);
     -fx-background-radius: 4px;
 }
 
 .propose-button {
-    -fx-background-color: #ffc107;
-    -fx-text-fill: #1b263b;
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #45a049);
+    -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-padding: 10px 20px;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
-    -fx-border-color: #ff9800;
+    -fx-border-color: #45a049;
     -fx-border-width: 1px;
     -fx-cursor: hand;
 }
 
 .propose-button:hover {
-    -fx-background-color: #ffd54f;
-    -fx-border-color: #ffc107;
+    -fx-background-color: linear-gradient(to bottom, #5cbf60, #4CAF50);
+    -fx-border-color: #4CAF50;
 }
 
 .secondary-button {
@@ -1426,4 +1556,287 @@
     -fx-border-color: #415a77;
     -fx-border-width: 1px;
     -fx-border-radius: 6px;
-} 
+}
+
+/* ==========================================================================
+   Matchup Predictor Styles
+   ========================================================================== */
+
+.title-label {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #ffffff, #9ab, #778da9);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 8, 0.3, 0, 2);
+}
+
+.selection-section {
+    -fx-background-color: linear-gradient(to bottom, #1b263b, #0d1b2a);
+    -fx-background-radius: 15px;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-padding: 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0.3, 0, 4);
+}
+
+.section-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0.2, 0, 1);
+}
+
+.team-label, .year-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e1dd;
+    -fx-min-width: 70px;
+}
+
+.vs-label {
+    -fx-font-size: 20px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #9ab;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 2, 0.1, 0, 1);
+}
+
+.predict-button {
+    -fx-background-color: linear-gradient(to bottom, #28a745, #1e7e34);
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-border-color: #4caf50;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-background-radius: 12px;
+    -fx-padding: 15px 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0.3, 0, 3);
+    -fx-cursor: hand;
+}
+
+.predict-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #34ce57, #28a745);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.predict-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #1e7e34, #155724);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+.loading-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9ab;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0.2, 0, 1);
+}
+
+.prediction-section {
+    -fx-background-color: linear-gradient(to bottom, #1b263b, #0d1b2a);
+    -fx-background-radius: 15px;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0.2, 0, 3);
+}
+
+.score-box {
+    -fx-background-color: linear-gradient(to bottom, #2a3a4a, #1b263b);
+    -fx-background-radius: 12px;
+    -fx-border-color: #5a7698;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-padding: 20px 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0.2, 0, 2);
+    -fx-min-width: 150px;
+}
+
+.team-name {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e1dd;
+}
+
+.score-display {
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to bottom, #ffffff, #9ab);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 4, 0.3, 0, 2);
+}
+
+.final-score-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #778da9;
+}
+
+.probability-box {
+    -fx-background-color: linear-gradient(to bottom, #2a3a4a, #1b263b);
+    -fx-background-radius: 12px;
+    -fx-border-color: #5a7698;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-padding: 20px 30px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0.2, 0, 2);
+    -fx-min-width: 120px;
+}
+
+.probability-display {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to bottom, #28a745, #20c997);
+    -fx-effect: dropshadow(gaussian, rgba(40,167,69,0.4), 4, 0.3, 0, 2);
+}
+
+.probability-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e1dd;
+}
+
+.vs-small-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #778da9;
+}
+
+.player-prediction-card {
+    -fx-background-color: linear-gradient(to bottom, #2a3a4a, #1b263b);
+    -fx-background-radius: 10px;
+    -fx-border-color: #5a7698;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.2, 0, 2);
+    -fx-min-width: 200px;
+    -fx-max-width: 250px;
+}
+
+.player-position {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e1dd;
+    -fx-background-color: #5a7698;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px 8px;
+}
+
+.player-name {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.player-stats {
+    -fx-font-size: 12px;
+    -fx-font-family: "Consolas", "Monaco", monospace;
+    -fx-text-fill: #9ab;
+}
+
+.insight-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #e0e1dd;
+    -fx-padding: 10px 15px;
+    -fx-background-color: linear-gradient(to right, #2a3a4a, #1b263b);
+    -fx-background-radius: 8px;
+    -fx-border-color: #415a77;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0.2, 0, 1);
+}
+
+.factor-card {
+    -fx-background-color: linear-gradient(to bottom, #2a3a4a, #1b263b);
+    -fx-background-radius: 10px;
+    -fx-border-color: #5a7698;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.2, 0, 2);
+    -fx-min-width: 180px;
+}
+
+.factor-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #9ab;
+}
+
+.factor-value {
+    -fx-font-size: 12px;
+    -fx-text-fill: #e0e1dd;
+}
+
+/* ComboBox Styling for Team Selection */
+.combo-box {
+    -fx-background-color: linear-gradient(to bottom, #415a77, #2a3a4a);
+    -fx-border-color: #778da9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0.2, 0, 1);
+}
+
+.combo-box:hover {
+    -fx-background-color: linear-gradient(to bottom, #5a7698, #415a77);
+    -fx-border-color: #9ab;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #e0e1dd;
+    -fx-font-weight: bold;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combo-box .arrow {
+    -fx-background-color: #e0e1dd;
+}
+
+/* Team Selection Cards */
+.team-selection-card {
+    -fx-background-color: linear-gradient(to bottom, #2a3a4a, #1b263b);
+    -fx-background-radius: 12px;
+    -fx-border-color: #5a7698;
+    -fx-border-width: 2px;
+    -fx-border-radius: 12px;
+    -fx-padding: 25px 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 6, 0.2, 0, 2);
+    -fx-min-width: 280px;
+}
+
+.team-card-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e1dd;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0.2, 0, 1);
+}
+
+.vs-subtitle {
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-text-fill: #778da9;
+    -fx-opacity: 0.8;
+}
+
+/* Main Menu Enhancements */
+.main-menu-container {
+    -fx-background-color: linear-gradient(to bottom, rgba(27, 38, 59, 0.3), rgba(13, 27, 42, 0.6));
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(65, 90, 119, 0.4);
+    -fx-border-width: 1px;
+    -fx-border-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.3, 0, 4);
+}
+
+/* Trade Simulator Section Labels */
+.section-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e0e1dd;
+}
