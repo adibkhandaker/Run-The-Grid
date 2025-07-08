@@ -15,7 +15,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("MainMenu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("NFL DATA HUB");
+        stage.setTitle("Run the Grid");
         stage.setScene(scene);
         stage.show();
     }

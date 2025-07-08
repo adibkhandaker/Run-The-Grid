@@ -10,7 +10,7 @@
     <children>
         <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" styleClass="main-menu-container">
             <children>
-                <Label fx:id="mainTitle" styleClass="main-title" text="NFL Data Hub" />
+                <Label fx:id="mainTitle" styleClass="main-title" text="Run the Grid" />
                 <VBox alignment="CENTER" spacing="15.0">
                     <children>
                         <Button onAction="#draftByYear" prefHeight="55.0" prefWidth="280.0" text="Draft By Year" styleClass="menu-button" />
