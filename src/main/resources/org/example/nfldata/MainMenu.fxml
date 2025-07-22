@@ -1,11 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="495.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.MainMenuController">
-   <children>
-      <Button layoutX="41.0" layoutY="108.0" mnemonicParsing="false" onAction="#draftByYear" prefHeight="71.0" prefWidth="196.0" text="Draft By Year" />
-      <Button layoutX="265.0" layoutY="108.0" mnemonicParsing="false" onAction="#teamSelection" prefHeight="71.0" prefWidth="196.0" text="Team Information" />
-   </children>
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.MainMenuController">
+    <children>
+        <VBox alignment="CENTER" spacing="25.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" styleClass="main-menu-container">
+            <children>
+                <Label fx:id="mainTitle" styleClass="main-title" text="Run the Grid" />
+                <VBox alignment="CENTER" spacing="15.0">
+                    <children>
+                        <Button onAction="#draftByYear" prefHeight="55.0" prefWidth="280.0" text="Draft By Year" styleClass="menu-button" />
+                        <Button onAction="#teamSelection" prefHeight="55.0" prefWidth="280.0" text="Team Pages" styleClass="menu-button" />
+                        <Button onAction="#latestNews" prefHeight="55.0" prefWidth="280.0" text="Latest News" styleClass="menu-button" />
+                        <Button onAction="#scheduleVisualizer" prefHeight="55.0" prefWidth="280.0" text="Schedule" styleClass="menu-button" />
+                        <Button onAction="#openNFLRecords" prefHeight="55.0" prefWidth="280.0" text="NFL Records" styleClass="menu-button" />
+                        <Button onAction="#openTradeSimulator" prefHeight="55.0" prefWidth="280.0" text="Trade Simulator" styleClass="menu-button" />
+                        <Button onAction="#openMatchupPredictor" prefHeight="55.0" prefWidth="280.0" text="Matchup Predictor" styleClass="menu-button" />
+                        <Button onAction="#exit" prefHeight="55.0" prefWidth="280.0" text="Exit" styleClass="menu-button-exit" />
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+        </VBox>
+    </children>
 </AnchorPane>

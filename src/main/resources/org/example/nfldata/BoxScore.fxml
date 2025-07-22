@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.BoxScoreController">
+    <children>
+        <!-- Header: Team Info and Score -->
+        <GridPane hgap="20.0" layoutX="0" layoutY="0" prefWidth="1200.0" styleClass="header-section" alignment="CENTER">
+            <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="120.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="0">
+                    <children>
+                        <Label text="AWAY" styleClass="team-designation-label" />
+                        <ImageView fx:id="awayLogo" fitHeight="80.0" fitWidth="80.0" preserveRatio="true" />
+                        <Label fx:id="awayTeamName" styleClass="team-name-boxscore" text="Away Team" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1">
+                    <children>
+                        <Label fx:id="finalScoreLabel" styleClass="final-score" text="0 - 0" />
+                        <Label fx:id="gameStatusLabel" styleClass="game-status-boxscore" text="FINAL" />
+                        <Label fx:id="gameDateLabel" styleClass="game-status-boxscore" text="Date" />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="2">
+                    <children>
+                        <Label text="HOME" styleClass="team-designation-label" />
+                        <ImageView fx:id="homeLogo" fitHeight="80.0" fitWidth="80.0" preserveRatio="true" />
+                        <Label fx:id="homeTeamName" styleClass="team-name-boxscore" text="Home Team" />
+                    </children>
+                </VBox>
+            </children>
+        </GridPane>
+        
+        <!-- Main Content: Stats -->
+        <ScrollPane hbarPolicy="NEVER" layoutY="150.0" prefHeight="600.0" prefWidth="1200.0" fitToWidth="true">
+            <content>
+                <VBox spacing="20.0" alignment="TOP_CENTER">
+                    <padding><Insets top="20" bottom="20" left="20" right="20" /></padding>
+                    <children>
+                        <Label text="Team Stats" styleClass="section-title"/>
+                        <GridPane fx:id="teamStatsGrid" hgap="10" vgap="10" alignment="CENTER"/>
+                        
+                        <Label text="Player Stats" styleClass="section-title"/>
+                        <HBox fx:id="playerStatsBox" spacing="20" alignment="TOP_CENTER"/>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+
+        <!-- Back Button -->
+        <Button fx:id="backButton" layoutX="20.0" layoutY="760.0" onAction="#goBack" text="← Back to Schedule" styleClass="back-button" />
+    </children>
+</AnchorPane> 

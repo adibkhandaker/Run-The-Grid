@@ -15,6 +15,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -27,117 +29,89 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
-
-public class DraftByYearController implements Initializable {
-
+public class TeamDraftController implements Initializable {
     @FXML
     private ChoiceBox<Integer> yearChoice;
-
-    @FXML
-    private ChoiceBox<String> roundChoice;
 
     @FXML
     private TableView<DraftPlayer2025> draftTable;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> round;
+    private TableColumn<DraftPlayer2025, String> pickColumn;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> pick;
+    private TableColumn<DraftPlayer2025, String> playerColumn;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> team;
+    private TableColumn<DraftPlayer2025, String> positionColumn;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> name;
+    private TableColumn<DraftPlayer2025, String> collegeColumn;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> position;
+    private TableColumn<DraftPlayer2025, String> roundColumn;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> height;
+    private Label draftLabel;
 
     @FXML
-    private TableColumn<DraftPlayer2025, String> college;
+    private ImageView teamLogo;
 
     @FXML
     private Label statusLabel;
 
     @FXML
+    private Label teamNameLabel;
+
+    @FXML
     private Button backButton;
 
-    private final ObservableList<DraftPlayer2025> allDraftData = FXCollections.observableArrayList();
-    private final Map<String, String> teamCache = new HashMap<>();
+    private int teamID;
+    private JSONObject team;
+    private final Map<Integer, JSONArray> draftDataCache = new HashMap<>();
     private final Map<String, JSONObject> athleteCache = new HashMap<>();
     private final Map<String, String> collegeCache = new HashMap<>();
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        for (int i = 1970; i <= 2025; ++i) {
-            yearChoice.getItems().add(i);
-        }
-        for (int i = 1; i <= 7; ++i) {
-            roundChoice.getItems().add(String.valueOf(i));
-        }
-        roundChoice.getItems().add("All Rounds");
-        roundChoice.setValue("All Rounds");
-
-        statusLabel.setVisible(false);
-
-        yearChoice.setOnAction(this::getYearData);
-        roundChoice.setOnAction(this::filterByRound);
-
-        setupTableColumns();
+    public void setTeam(JSONObject team) {
+        this.team = team;
+        this.teamID = Integer.parseInt((String) team.get("id"));
+        teamNameLabel.setText((String) team.get("displayName") + " Draft History");
+        setTeamLogo();
+        getDraftData(null);
     }
 
-    private void setupTableColumns() {
-        round.setCellValueFactory(new PropertyValueFactory<>("round"));
-        pick.setCellValueFactory(new PropertyValueFactory<>("pick"));
-        team.setCellValueFactory(new PropertyValueFactory<>("team"));
-        name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        position.setCellValueFactory(new PropertyValueFactory<>("position"));
-        height.setCellValueFactory(new PropertyValueFactory<>("height"));
-        college.setCellValueFactory(new PropertyValueFactory<>("college"));
-        draftTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-    }
+    public void getDraftData(ActionEvent event) {
+        Integer year = yearChoice.getValue();
+        if (year == null) return;
 
-    public void getYearData(ActionEvent event) {
-        Integer selectedYear = yearChoice.getValue();
-        if (selectedYear == null) return;
-
-        statusLabel.setText("Loading draft data for " + selectedYear + "...");
+        draftLabel.setText(year + " DRAFT CLASS");
+        statusLabel.setText("Loading draft data for " + year + "...");
         statusLabel.setVisible(true);
         draftTable.getItems().clear();
-        allDraftData.clear();
-        teamCache.clear();
         athleteCache.clear();
         collegeCache.clear();
-
 
         Task<ObservableList<DraftPlayer2025>> task = new Task<>() {
             @Override
             protected ObservableList<DraftPlayer2025> call() throws Exception {
-                return fetchDraftDataForYear(selectedYear);
+                return fetchDraftDataForYear(year);
             }
         };
 
         task.setOnSucceeded(e -> {
             ObservableList<DraftPlayer2025> result = task.getValue();
             if (result.isEmpty()) {
-                statusLabel.setText("No data available for " + selectedYear);
+                statusLabel.setText("No data available for " + year);
+                statusLabel.setVisible(true);
             } else {
                 statusLabel.setVisible(false);
             }
-            allDraftData.setAll(result);
-            draftTable.setItems(allDraftData);
-            roundChoice.setVisible(true);
-            handleRoundSelection(); // Filter for "All Rounds" initially
+            draftTable.setItems(result);
         });
 
         task.setOnFailed(e -> {
-            statusLabel.setText("Failed to load draft data for " + selectedYear + ".");
+            statusLabel.setText("Failed to load draft data.");
             task.getException().printStackTrace();
         });
 
@@ -165,7 +139,20 @@ public class DraftByYearController implements Initializable {
 
             if (picks != null) {
                 for (Object pick : picks) {
-                    data.add(parsePick(parser, (JSONObject) pick, String.valueOf(year)));
+                    JSONObject teamPick = (JSONObject) pick;
+                    JSONObject teamRef = (JSONObject) teamPick.get("team");
+                    if (teamRef != null) {
+                        String teamAPI = (String) teamRef.get("$ref");
+                        if (teamAPI != null && !teamAPI.isEmpty()) {
+                            String teamIdStr = teamAPI.substring(teamAPI.lastIndexOf('/') + 1);
+                            if (teamIdStr.contains("?")) {
+                                teamIdStr = teamIdStr.substring(0, teamIdStr.indexOf("?"));
+                            }
+                            if (Integer.parseInt(teamIdStr) == this.teamID) {
+                                data.add(parsePick(parser, teamPick, String.valueOf(year)));
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -178,16 +165,8 @@ public class DraftByYearController implements Initializable {
         String overallPick = String.valueOf(overallPickInt);
         String round = String.valueOf(roundInt);
 
-        JSONObject teamRef = (JSONObject) teamPick.get("team");
-        String teamName = "N/A";
-        if (teamRef != null) {
-            String teamAPI = (String) teamRef.get("$ref");
-            teamName = teamCache.computeIfAbsent(teamAPI, this::fetchTeamName);
-        }
-
         JSONObject athleteRef = (JSONObject) teamPick.get("athlete");
         String athleteName = "N/A";
-        String height = "N/A";
         String collegeName = "N/A";
         String positionName = "N/A";
 
@@ -205,36 +184,21 @@ public class DraftByYearController implements Initializable {
                 }
             });
 
-            if (athleteRoot.get("displayHeight") != null) {
-                height = athleteRoot.get("displayHeight").toString().replace("/\"", "\"");
-            }
             athleteName = (String) athleteRoot.get("displayName");
 
             JSONObject collegeRef = (JSONObject) athleteRoot.get("college");
-            if (collegeRef != null) {
+            if (collegeRef != null && collegeRef.get("$ref") != null) {
                 String collegeAPI = (String) collegeRef.get("$ref");
                 collegeName = collegeCache.computeIfAbsent(collegeAPI, this::fetchCollegeName);
             }
 
             JSONObject positionRef = (JSONObject) athleteRoot.get("position");
-            if(positionRef != null) {
+            if (positionRef != null) {
                 positionName = (String) positionRef.get("abbreviation");
             }
         }
 
-        return new DraftPlayer2025(year, round, overallPick, teamName, athleteName, positionName, height, collegeName);
-    }
-
-    private String fetchTeamName(String url) {
-        try {
-            HttpURLConnection conn = APIController.fetchAPIResponse(url);
-            if (conn == null) return "N/A";
-            String resp = APIController.readAPIResponse(conn);
-            return (String) ((JSONObject) new JSONParser().parse(resp)).get("abbreviation");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "N/A";
-        }
+        return new DraftPlayer2025("", round, overallPick, "", athleteName, positionName, "", collegeName);
     }
 
     private String fetchCollegeName(String url) {
@@ -249,42 +213,45 @@ public class DraftByYearController implements Initializable {
         }
     }
 
-    private void handleRoundSelection() {
-        String selectedRound = roundChoice.getValue();
-        if (selectedRound == null || allDraftData.isEmpty()) {
-            return;
-        }
-
-        if ("All Rounds".equals(selectedRound)) {
-            draftTable.setItems(allDraftData);
-        } else {
-            ObservableList<DraftPlayer2025> filteredData = allDraftData.stream()
-                    .filter(p -> selectedRound.equals(p.getRound()))
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            draftTable.setItems(filteredData);
+    private void setTeamLogo() {
+        try {
+            String teamAPI = "http://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/2025/teams/" + teamID + "?lang=en&region=us";
+            HttpURLConnection team = APIController.fetchAPIResponse(teamAPI);
+            String responseTeam = APIController.readAPIResponse(team);
+            JSONParser myParser = new JSONParser();
+            JSONObject teamJSON = (JSONObject) myParser.parse(responseTeam);
+            JSONArray logos = (JSONArray) teamJSON.get("logos");
+            JSONObject mainLogo = (JSONObject) logos.get(0);
+            String logoLink = (String) mainLogo.get("href");
+            Image logoImage = new Image(logoLink);
+            teamLogo.setImage(logoImage);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    private void filterByRound(ActionEvent event) {
-        String selectedRound = roundChoice.getValue();
-        if (selectedRound == null || allDraftData.isEmpty()) {
-            return;
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        for (int i = 1970; i <= 2025; ++i) {
+            yearChoice.getItems().add(i);
         }
-
-        if ("All Rounds".equals(selectedRound)) {
-            draftTable.setItems(allDraftData);
-        } else {
-            ObservableList<DraftPlayer2025> filteredData = allDraftData.stream()
-                    .filter(p -> selectedRound.equals(p.getRound()))
-                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            draftTable.setItems(filteredData);
-        }
+        yearChoice.setValue(2025);
+        yearChoice.setOnAction(this::getDraftData);
+        roundColumn.setCellValueFactory(new PropertyValueFactory<>("round"));
+        pickColumn.setCellValueFactory(new PropertyValueFactory<>("pick"));
+        playerColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        collegeColumn.setCellValueFactory(new PropertyValueFactory<>("college"));
+        draftTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        statusLabel.setVisible(false);
     }
 
     @FXML
     private void goBack() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("MainMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TeamOptions.fxml"));
         Parent root = loader.load();
+        TeamOptionsController controller = loader.getController();
+        controller.setTeam(this.team);
         Stage stage = (Stage) backButton.getScene().getWindow();
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());

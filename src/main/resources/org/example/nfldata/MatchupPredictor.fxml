@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox prefHeight="800.0" prefWidth="1200.0" spacing="20" alignment="TOP_CENTER" styleClass="root"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.nfldata.MatchupPredictorController" stylesheets="@styles.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <children>
+            <Button fx:id="backButton" text="Back" onAction="#goBack" styleClass="back-button"/>
+            <Label text="Matchup Predictor" styleClass="title-label">
+                <font>
+                    <Font name="System Bold" size="28.0" />
+                </font>
+            </Label>
+        </children>
+    </HBox>
+
+    <!-- Team Selection Section -->
+    <VBox spacing="25" styleClass="selection-section">
+        <Label text="Select Teams &amp; Years" styleClass="section-title"/>
+        
+        <!-- Team Selection Cards -->
+        <HBox alignment="CENTER" spacing="40">
+            <!-- Team 1 Card -->
+            <VBox alignment="CENTER" spacing="15" styleClass="team-selection-card">
+                <Label text="Team 1" styleClass="team-card-title"/>
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="Team:" styleClass="team-label"/>
+                    <ComboBox fx:id="team1Choice" prefWidth="200.0" promptText="Select Team" styleClass="combo-box"/>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="Year:" styleClass="year-label"/>
+                    <ComboBox fx:id="year1Choice" prefWidth="120.0" promptText="Year" styleClass="combo-box"/>
+                </HBox>
+                <ImageView fx:id="team1Logo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
+            </VBox>
+            
+            <!-- VS Section -->
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="VS" styleClass="vs-label"/>
+                <Label text="Predict the outcome!" styleClass="vs-subtitle"/>
+            </VBox>
+            
+            <!-- Team 2 Card -->
+            <VBox alignment="CENTER" spacing="15" styleClass="team-selection-card">
+                <Label text="Team 2" styleClass="team-card-title"/>
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="Team:" styleClass="team-label"/>
+                    <ComboBox fx:id="team2Choice" prefWidth="200.0" promptText="Select Team" styleClass="combo-box"/>
+                </HBox>
+                <HBox alignment="CENTER" spacing="10">
+                    <Label text="Year:" styleClass="year-label"/>
+                    <ComboBox fx:id="year2Choice" prefWidth="120.0" promptText="Year" styleClass="combo-box"/>
+                </HBox>
+                <ImageView fx:id="team2Logo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true"/>
+            </VBox>
+        </HBox>
+        
+        <!-- Predict Button -->
+        <HBox alignment="CENTER">
+            <Button fx:id="predictButton" text="Predict Matchup" onAction="#predictMatchup" styleClass="predict-button"/>
+        </HBox>
+    </VBox>
+
+    <!-- Loading Indicator -->
+    <VBox fx:id="loadingSection" spacing="10" alignment="CENTER" visible="false">
+        <Label text="Analyzing matchup..." styleClass="loading-label"/>
+        <ProgressBar fx:id="progressBar" prefWidth="300.0" progress="-1.0"/>
+    </VBox>
+
+    <!-- Prediction Results -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" fx:id="resultsScrollPane" visible="false">
+        <content>
+            <VBox fx:id="resultsContainer" spacing="25" alignment="TOP_CENTER">
+                <padding>
+                    <Insets bottom="20" left="15" right="15" top="15"/>
+                </padding>
+                
+                <!-- Score Prediction -->
+                <VBox fx:id="scoreSection" spacing="15" styleClass="prediction-section">
+                    <Label text="🏆 Predicted Final Score 🏆" styleClass="section-title"/>
+                    <HBox alignment="CENTER" spacing="40">
+                        <VBox fx:id="team1ScoreBox" alignment="CENTER" spacing="10" styleClass="score-box">
+                            <Label fx:id="team1Name" text="Team 1" styleClass="team-name"/>
+                            <Label fx:id="team1Score" text="0" styleClass="score-display"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5">
+                            <Label text="FINAL" styleClass="final-score-label"/>
+                            <Label text="SCORE" styleClass="final-score-label"/>
+                        </VBox>
+                        <VBox fx:id="team2ScoreBox" alignment="CENTER" spacing="10" styleClass="score-box">
+                            <Label fx:id="team2Name" text="Team 2" styleClass="team-name"/>
+                            <Label fx:id="team2Score" text="0" styleClass="score-display"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Win Probability -->
+                <VBox fx:id="probabilitySection" spacing="15" styleClass="prediction-section">
+                    <Label text="📊 Win Probability 📊" styleClass="section-title"/>
+                    <HBox alignment="CENTER" spacing="40">
+                        <VBox fx:id="team1ProbabilityBox" alignment="CENTER" spacing="10" styleClass="probability-box">
+                            <Label fx:id="team1Probability" text="50%" styleClass="probability-display"/>
+                            <Label fx:id="team1ProbabilityLabel" text="Team 1" styleClass="probability-label"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5">
+                            <Label text="WIN" styleClass="vs-small-label"/>
+                            <Label text="CHANCE" styleClass="vs-small-label"/>
+                        </VBox>
+                        <VBox fx:id="team2ProbabilityBox" alignment="CENTER" spacing="10" styleClass="probability-box">
+                            <Label fx:id="team2Probability" text="50%" styleClass="probability-display"/>
+                            <Label fx:id="team2ProbabilityLabel" text="Team 2" styleClass="probability-label"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Key Players Prediction -->
+                <VBox fx:id="playersSection" spacing="15" styleClass="prediction-section">
+                    <Label text="⭐ Key Players Prediction ⭐" styleClass="section-title"/>
+                    <GridPane fx:id="playersGrid" hgap="20" vgap="15" alignment="CENTER"/>
+                </VBox>
+
+                <!-- Matchup Insights -->
+                <VBox fx:id="insightsSection" spacing="15" styleClass="prediction-section">
+                    <Label text="🔍 Matchup Insights 🔍" styleClass="section-title"/>
+                    <VBox fx:id="insightsContainer" spacing="10"/>
+                </VBox>
+
+                <!-- Key Factors -->
+                <VBox fx:id="factorsSection" spacing="15" styleClass="prediction-section">
+                    <Label text="📈 Key Factors 📈" styleClass="section-title"/>
+                    <GridPane fx:id="factorsGrid" hgap="20" vgap="15" alignment="CENTER"/>
+                </VBox>
+            </VBox>
+        </content>
+    </ScrollPane>
+
+</VBox> 

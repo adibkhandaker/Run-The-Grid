@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+
+<VBox prefHeight="800.0" prefWidth="1200.0" spacing="15" alignment="TOP_CENTER" styleClass="root"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.nfldata.TeamStatsController" stylesheets="@styles.css">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <children>
+            <Button fx:id="backButton" text="Back" onAction="#goBack" styleClass="back-button"/>
+            <ImageView fx:id="teamLogoImageView" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+            <Label fx:id="titleLabel" text="Team Statistics" styleClass="title-label">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+        </children>
+    </HBox>
+
+    <!-- Team Info and Year Selection -->
+    <HBox alignment="CENTER" spacing="20" VBox.vgrow="NEVER">
+        <padding>
+            <Insets top="10" bottom="10"/>
+        </padding>
+        <children>
+            <Label fx:id="teamNameLabel" text="Team Name" styleClass="team-name-label"/>
+            <Label text="Season:"/>
+            <ChoiceBox fx:id="yearChoice" prefWidth="150.0"/>
+            <Button fx:id="loadStatsButton" text="Load Statistics" onAction="#loadTeamStats" styleClass="load-button"/>
+        </children>
+    </HBox>
+
+    <!-- Loading/Error Messages -->
+    <Label fx:id="statusLabel" text="" styleClass="status-label" visible="false"/>
+
+    <!-- TabPane for different views -->
+    <TabPane VBox.vgrow="ALWAYS" styleClass="stats-tab-pane">
+        <!-- Team Statistics Tab -->
+        <Tab text="Team Statistics" closable="false">
+            <ScrollPane fitToWidth="true">
+                <content>
+                    <VBox fx:id="statsContainer" spacing="25" alignment="TOP_CENTER">
+                        <padding>
+                            <Insets bottom="20" left="15" right="15" top="15"/>
+                        </padding>
+                        
+                        <!-- Key Performance Indicators -->
+                        <VBox fx:id="kpiSection" spacing="15" styleClass="stats-section">
+                            <Label text="Key Performance Indicators" styleClass="section-title"/>
+                            <GridPane fx:id="kpiGrid" hgap="15" vgap="15" alignment="CENTER"/>
+                        </VBox>
+
+                        <!-- Team Insights -->
+                        <VBox fx:id="insightsSection" spacing="10" styleClass="stats-section">
+                            <Label text="Team Insights &amp; Analysis" styleClass="section-title"/>
+                            <VBox fx:id="insightsContainer" spacing="8"/>
+                        </VBox>
+
+                        <!-- Offensive Performance -->
+                        <VBox fx:id="offenseSection" spacing="15" styleClass="stats-section">
+                            <Label text="Offensive Performance" styleClass="section-title"/>
+                            <GridPane fx:id="offenseGrid" hgap="12" vgap="12" alignment="CENTER"/>
+                        </VBox>
+
+                        <!-- Defensive Performance -->
+                        <VBox fx:id="defenseSection" spacing="15" styleClass="stats-section">
+                            <Label text="Defensive Performance" styleClass="section-title"/>
+                            <GridPane fx:id="defenseGrid" hgap="12" vgap="12" alignment="CENTER"/>
+                        </VBox>
+
+                        <!-- Special Teams & Misc -->
+                        <VBox fx:id="specialSection" spacing="15" styleClass="stats-section">
+                            <Label text="Special Teams &amp; Miscellaneous" styleClass="section-title"/>
+                            <GridPane fx:id="specialGrid" hgap="12" vgap="12" alignment="CENTER"/>
+                        </VBox>
+
+                        <!-- Fun Facts -->
+                        <VBox fx:id="funFactsSection" spacing="10" styleClass="stats-section">
+                            <Label text="Did You Know? Fun Facts &amp; Highlights" styleClass="section-title"/>
+                            <VBox fx:id="funFactsContainer" spacing="8"/>
+                        </VBox>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </Tab>
+
+        <!-- Team Stat Leaders Tab -->
+        <Tab text="Stat Leaders" closable="false">
+            <ScrollPane fitToWidth="true">
+                <content>
+                    <VBox fx:id="leadersContainer" spacing="20" alignment="TOP_CENTER">
+                        <padding>
+                            <Insets bottom="20" left="15" right="15" top="15"/>
+                        </padding>
+                        
+                        <!-- Simple Sorting Control -->
+                        <HBox alignment="CENTER" spacing="15">
+                            <Label text="Filter by:" styleClass="control-label"/>
+                            <ChoiceBox fx:id="categoryFilter" prefWidth="150.0"/>
+                        </HBox>
+                        
+                        <!-- Leaders will be populated here -->
+                        <VBox fx:id="leadersVBox" spacing="16" styleClass="leaders-container"/>
+                    </VBox>
+                </content>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
+
+</VBox> 

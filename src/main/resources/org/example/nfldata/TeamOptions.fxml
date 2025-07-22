@@ -2,10 +2,141 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.effect.DropShadow?>
 
-<AnchorPane prefHeight="451.0" prefWidth="646.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.TeamOptionsController">
-   <children>
-      <Button layoutX="58.0" layoutY="98.0" mnemonicParsing="false" onAction="#depthChart" prefHeight="59.0" prefWidth="125.0" text="Depth Chart" />
-      <Button layoutX="257.0" layoutY="103.0" mnemonicParsing="false" onAction="#schedule" prefHeight="59.0" prefWidth="125.0" text="Schedule" />
-   </children>
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.TeamOptionsController">
+    <children>
+        <!-- Header Section -->
+        <StackPane layoutX="0.0" layoutY="0.0" prefHeight="200.0" prefWidth="1280.0" styleClass="header-section">
+            <children>
+                <!-- Background Rectangle -->
+                <Rectangle arcHeight="0.0" arcWidth="0.0" height="200.0" width="1280.0" styleClass="header-background"/>
+                
+                <!-- Header Content -->
+                <VBox alignment="CENTER" spacing="10.0">
+                    <children>
+                        <Label text="TEAM HUB" styleClass="header-title">
+                            <font>
+                                <Font name="System Bold" size="48.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="teamNameLabel" text="Team Name" styleClass="team-name-label">
+                            <font>
+                                <Font name="System Bold" size="32.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+            </children>
+        </StackPane>
+
+        <!-- Main Content Area -->
+        <VBox alignment="CENTER" layoutX="0.0" layoutY="200.0" prefHeight="520.0" prefWidth="1280.0" spacing="30.0" styleClass="main-content">
+            <children>
+                <!-- Options Grid -->
+                <HBox alignment="CENTER" spacing="40.0">
+                    <children>
+                        <!-- Draft History Card -->
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="15.0" styleClass="option-card">
+                            <children>
+                                <Label text="📋" styleClass="option-icon">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Draft History" styleClass="option-title">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Explore team's draft picks and selections" styleClass="option-description" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button onAction="#draftHistory" styleClass="option-button" text="View Draft History" />
+                            </children>
+                        </VBox>
+
+                        <!-- Team Schedule Card -->
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="15.0" styleClass="option-card">
+                            <children>
+                                <Label text="📅" styleClass="option-icon">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Team Schedule" styleClass="option-title">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label text="View upcoming games and season schedule" styleClass="option-description" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button onAction="#schedule" styleClass="option-button" text="View Schedule" />
+                            </children>
+                        </VBox>
+
+                        <!-- Depth Chart Card -->
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="15.0" styleClass="option-card">
+                            <children>
+                                <Label text="👥" styleClass="option-icon">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Depth Chart" styleClass="option-title">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Explore team roster and player positions" styleClass="option-description" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button onAction="#depthChart" styleClass="option-button" text="View Depth Chart" />
+                            </children>
+                        </VBox>
+
+                        <!-- Team Statistics Card -->
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="15.0" styleClass="option-card">
+                            <children>
+                                <Label text="📊" styleClass="option-icon">
+                                    <font>
+                                        <Font size="48.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Team Statistics" styleClass="option-title">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label text="View team-wide stats and league rankings" styleClass="option-description" textAlignment="CENTER" wrapText="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+                                <Button onAction="#teamStats" styleClass="option-button" text="View Team Stats" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+
+        <!-- Back Button -->
+        <Button fx:id="backButton" layoutX="20.0" layoutY="20.0" onAction="#goBack" styleClass="back-button" text="← Back" />
+    </children>
 </AnchorPane>

@@ -1,27 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="510.0" prefWidth="709.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.DraftByYearController">
-   <children>
-      <ChoiceBox fx:id="yearChoice" layoutX="21.0" layoutY="35.0" onAction="#getYearData" prefWidth="150.0" />
-      <TableView fx:id="draftTable" layoutX="21.0" layoutY="84.0" prefHeight="394.0" prefWidth="664.0">
-        <columns>
-          <TableColumn fx:id="round" prefWidth="75.0" text="Round" />
-          <TableColumn fx:id="pick" prefWidth="75.0" text="Pick" />
-            <TableColumn fx:id="team" prefWidth="75.0" text="Team" />
-            <TableColumn fx:id="name" prefWidth="107.0" text="Name" />
-            <TableColumn fx:id="position" prefWidth="75.0" text="Position" />
-            <TableColumn fx:id="age" prefWidth="75.0" text="Age" />
-            <TableColumn fx:id="college" prefWidth="111.0" text="College" />
-        </columns>
-      </TableView>
-      <ChoiceBox fx:id="roundChoice" layoutX="205.0" layoutY="35.0" onAction="#getRoundData" prefWidth="150.0" />
-      <Label fx:id="yearLabel" layoutX="21.0" layoutY="14.0" text="Year" />
-      <Label fx:id="roundLabel" layoutX="205.0" layoutY="14.0" text="Round" />
-   </children>
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" styleClass="root" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.nfldata.DraftByYearController">
+    <children>
+        <VBox alignment="TOP_CENTER" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <children>
+                <Label styleClass="main-title" text="NFL Draft By Year" />
+                <HBox alignment="CENTER" spacing="20.0">
+                    <children>
+                        <Label styleClass="control-label" text="Year:" />
+                        <ChoiceBox fx:id="yearChoice" prefWidth="120.0" />
+                        <Label styleClass="control-label" text="Round:" />
+                        <ChoiceBox fx:id="roundChoice" prefWidth="120.0" />
+                        <Label styleClass="control-label" text="Status:" />
+                        <Label fx:id="statusLabel" styleClass="status-label" text="Ready" />
+                    </children>
+                </HBox>
+                <TableView fx:id="draftTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="round" prefWidth="100.0" text="Round" />
+                        <TableColumn fx:id="pick" prefWidth="100.0" text="Pick" />
+                        <TableColumn fx:id="team" prefWidth="150.0" text="Team" />
+                        <TableColumn fx:id="name" prefWidth="250.0" text="Player Name" />
+                        <TableColumn fx:id="position" prefWidth="150.0" text="Position" />
+                        <TableColumn fx:id="height" prefWidth="150.0" text="Height" />
+                        <TableColumn fx:id="college" prefWidth="250.0" text="College" />
+                    </columns>
+                </TableView>
+            </children>
+        </VBox>
+        <Button fx:id="backButton" onAction="#goBack" styleClass="back-button" text="← Back to Main Menu" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" />
+    </children>
 </AnchorPane>

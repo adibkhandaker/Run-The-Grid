@@ -5,18 +5,24 @@ public class DraftPlayer2025 {
     private String pick;
     private String team;
     private String name;
-    private String age;
+    private String height;
     private String position;
     private String college;
+    private String year;
 
-    public DraftPlayer2025(String round, String pick, String team, String name, String position, String age, String college) {
+    public DraftPlayer2025(String year, String round, String pick, String team, String name, String position, String height, String college) {
+        this.year = year;
         this.round = round;
         this.pick = pick;
         this.team = team;
         this.name = name;
-        this.age = age;
+        this.height = height;
         this.position = position;
         this.college = college;
+    }
+
+    public String getYear() {
+        return year;
     }
 
     public String getRound() {
@@ -39,8 +45,8 @@ public class DraftPlayer2025 {
         return position;
     }
 
-    public String getAge() {
-        return age;
+    public String getHeight() {
+        return height;
     }
 
     public String getCollege() {
